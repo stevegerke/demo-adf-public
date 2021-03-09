@@ -1,0 +1,35 @@
+# CI/CD pipeline to deploy ADF entities (pipelines, datasets, data flows, and so on)
+
+# Must be run from the ADF_Publish branch
+
+stages:
+- stage: Stage
+  displayName: 'ADF Code Deploy to Stage'
+  jobs:
+  - deployment: Stage
+    environment: Stage
+    strategy:
+      runOnce:
+        deploy:
+          steps:
+          - checkout: self
+          - task: PublishBuildArtifacts@1
+            displayName: '_stage'
+            inputs:
+              PathtoPublish: 'my-adf-dev'
+          - task: AzureKeyVault@1
+            displayName: 'Azure Key Vault: my-key-vault'
+            inputs:
+              azureSubscription: 'my_azure_devops_service_connection'
+              KeyVaultName: 'my-key-vault'
+          - task: AzureResourceManagerTemplateDeployment@3
+            displayName: 'ARM Template deployment: Resource Group scope'
+            inputs:
+              azureResourceManagerConnection: 'my_azure_devops_service_connection'
+              subscriptionId: '00000000-000-0000-0000-000000000000'
+              resourceGroupName: 'my-resource-group'
+              location: 'East US 2'
+              csmFile: 'my-adf-dev/ARMTemplateForFactory.json'
+              csmParametersFile: 'my-adf-dev/ARMTemplateParametersForFactory.json'
+              overrideParameters: '-factoryName "my-adf-stage" -ls_key_vault_properties_typeProperties_baseUrl "https://my-key-vault.vault.azure.net/" -ls_storage_adls_properties_typeProperties_url "https://mystorageadls.dfs.core.windows.net"'
+              condition: and(succeeded(), startsWith(variables['Build.SourceBranch'], 'refs/heads/adf_publish'))

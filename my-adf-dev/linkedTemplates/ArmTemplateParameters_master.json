@@ -1,0 +1,21 @@
+{
+	"$schema": "https://schema.management.azure.com/schemas/2015-01-01/deploymentParameters.json#",
+	"contentVersion": "1.0.0.0",
+	"parameters": {
+		"factoryName": {
+			"value": "my-adf-dev"
+		},
+		"ls_key_vault_properties_typeProperties_baseUrl": {
+			"value": "https://my-key-vault.vault.azure.net/"
+		},
+		"ls_storage_adls_properties_typeProperties_url": {
+			"value": "https://mystorageadls.dfs.core.windows.net"
+		},
+		"containerUri": {
+			"value": ""
+		},
+		"containerSasToken": {
+			"value": ""
+		}
+	}
+}
