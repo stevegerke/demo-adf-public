@@ -13,15 +13,6 @@ stages:
         deploy:
           steps:
           - checkout: self
-          - task: PublishBuildArtifacts@1
-            displayName: '_stage'
-            inputs:
-              PathtoPublish: 'my-adf-dev'
-          - task: AzureKeyVault@1
-            displayName: 'Azure Key Vault: my-key-vault'
-            inputs:
-              azureSubscription: 'my_azure_devops_service_connection'
-              KeyVaultName: 'my-key-vault'
           - task: AzureResourceManagerTemplateDeployment@3
             displayName: 'ARM Template deployment: Resource Group scope'
             inputs:
