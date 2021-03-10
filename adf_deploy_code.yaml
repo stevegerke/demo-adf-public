@@ -14,7 +14,7 @@ stages:
           steps:
           - checkout: self
           - task: AzureResourceManagerTemplateDeployment@3
-            displayName: 'ARM Template deployment: Resource Group scope'
+            displayName: 'ARM Template deployment: ADF'
             inputs:
               azureResourceManagerConnection: 'my_azure_devops_service_connection'
               subscriptionId: '00000000-000-0000-0000-000000000000'
